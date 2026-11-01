@@ -86,8 +86,9 @@ describe('GET /digest/:night', () => {
 
   it('renders a null owner as an em dash', async () => {
     const html = await (await app.request('/digest/2026-10-28')).text();
-    expect(rowOf(html, 'mid-report')).toContain('—');
-    expect(rowOf(html, 'calm-job')).not.toContain('—');
+    // Owner is the second cell; other empty cells (no error) also render as "—" (styleguide).
+    expect(rowOf(html, 'mid-report')).toContain('<td>mid-report</td><td>—</td>');
+    expect(rowOf(html, 'calm-job')).toContain('<td>calm-job</td><td>cy</td>');
   });
 
   it('returns 404 for a night with no file', async () => {
